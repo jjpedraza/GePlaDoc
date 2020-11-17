@@ -1,0 +1,26 @@
+{
+  "name": "gepladoc",
+  "version": "1.0.0",
+  "description": "Gestor de Plantillas de Documentos de Word",
+  "main": "index.php",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/prymecode/GePlaDoc.git"
+  },
+  "keywords": [
+    "GePlaDoc"
+  ],
+  "author": "Ing. Juan Jose Pedraza | jjpedraza.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/prymecode/GePlaDoc/issues"
+  },
+  "homepage": "https://github.com/prymecode/GePlaDoc#readme",
+  "dependencies": {
+    "bootstrap": "^4.5.3",
+    "jquery": "^3.5.1"
+  }
+}
