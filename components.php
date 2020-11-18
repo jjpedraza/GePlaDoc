@@ -5,84 +5,64 @@ require_once("preference.php");
 
 define("Version","1.0"); 
 
-function Init(){
-    if (VersionCheck() == TRUE){
-    } else {
-        if (VersionMaster_required() == "TRUE"){
-            echo "<div id='Version' class='alert alert-danger' role='alert' style='
-            height: 100%;
-            display: block;
-            position: fixed;
-            z-index: 5000;
-            width: 100%;
-            text-align: center;
-            '>
-            <h1>Requiere Actualizacion</h1>
-            <p>Por cuestiones de seguridad, se requiere una actualizacion del codigo del proyecto. Favor de comunicarse con su <b>Departamento de Informática</b> para realizar el proceso</p>
-            <p>Version actual: ".Version."<br>"."Version nueva: ".VersionMaster()."
-            <br>NOTA de la version: <cite>".getData()->label."</cite>
-            <br><a href='".VersionMaster_url()."'>Descargala aqui</a> <hr>
-            <br>
-            Desarrollador por ".getData()->contact."
-
-            </div>";
-
-           
-        } else {
-            echo "<div id='Version' class='alert alert-warning' role='alert'>
-            <h1>Se Recomienda actualizar Rintera</h1>
-            <p>Hay nueva versión disponible, se requiere actualizacion para seguir operando </p>
-            <p>Version actual: ".Version."<br>"."Version nueva: ".VersionMaster()."
-            <br><a href='".VersionMaster_url()."'>Descarga aqui</a>
-            </div>";
-        }
-       
-    }
-}
-function VersionCheck(){
-    if (Version < VersionMaster()){
-        return  FALSE;
-    } else {
+function NEmpleado_Valida($NEmpleado){
+    require("config.php");       
+    $sql = "select * from empleados WHERE nitavu ='".$NEmpleado."' and estado=''";            
+    $r= $db0 -> query($sql);
+    if($f = $r -> fetch_array())
+    {
         return TRUE;
+    } else {
+        return FALSE;
     }
-}
-function VersionMaster_url(){
-    return getData()-> download;
-}
+        
 
-
-function VersionMaster_required(){
-    return getData()-> required;
-}
-
-function VersionMaster(){
-    return getData()-> version;
-}
-function SESSION_init($id, $user, $session_name, $session_comentario, $ip){
-    require("rintera-config.php");	
-    $sql = "INSERT INTO sessiones (id, session_name,  usuario, fecha, hora, comentarios,ipcliente) 
-    VALUES ('".$id."', '".$session_name."', '".$user."', '".$fecha."', '".$hora."', '".$session_comentario."', '".$ip."')";
-    // mensaje($sql,'login.php');
-        if ($db0->query($sql) == TRUE)
-            {return TRUE;}
-        else {return FALSE;}
 }
 
 
-function SESSION_close($id){
-    require("rintera-config.php");
-    $sql="UPDATE sessiones  SET cierre_fecha='".$fecha."', cierre_hora='".$hora."'  WHERE id='".$id."'";
-    // //echo $sql;
-    if ($db0->query($sql) == TRUE)
-        {return TRUE;}
-    else {return FALSE;}
+function IdPlantilla_Valida($IdPlantilla){
+    require("config.php");       
+    $sql = "select * from plantillas WHERE IdPlantilla ='".$IdPlantilla."' and active=1";            
+    $r= $db0 -> query($sql);
+    if($f = $r -> fetch_array())
+    {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+        
+
 }
 
 
+
+
+function TokenGenerate(){
+    $len = 16;
+    $cadena_base =  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    $cadena_base .= '0123456789' ;
+    // $cadena_base .= '!@#%^&*()_,./<>?;:[]{}\|=+';
+   
+    $password = '';
+    $limite = strlen($cadena_base) - 1;
+   
+    for ($i=0; $i < $len; $i++)
+      $password .= $cadena_base[rand(0, $limite)];
+   
+    return $password;
+}
+
+
+function IdPlantilla (){
+    $IdPlantillaActual = Preference("IdPlantilla", "","");
+    $IdPlantillaNueva = $IdPlantillaActual + 1;
+    PreferenceEdit("IdPlantilla", "","",$IdPlantillaNueva);
+    return Preference("IdPlantilla", "","");
+}
 
 
 function Historia($IdUser, $IdApp, $Descripcion){
-    require("rintera-config.php");
+    require("config.php");
     $fecha = date('Y-m-d');
     $hora =  date ("H:i:s");
     $Descripcion = addslashes($Descripcion);    
@@ -390,7 +370,7 @@ function Toast($Texto,$Tipo,$img){
 }
 
 function UserAdmin($IdUser){
-    require("rintera-config.php");   
+    require("config.php");   
     // var_dump($dbUser);  
     $sql = "select * from useradmin WHERE IdUser ='".$IdUser."'";        
   
@@ -403,276 +383,6 @@ function UserAdmin($IdUser){
     
         
 }
-
-
-function QueryReporte($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    // echo $sql;    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['sql1'];
-    } else {
-        return "FALSE";
-    }
-        
-}
-
-function ConName($IdCon){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from dbs WHERE Idcon ='".$IdCon."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['ConName'];
-    } else {
-        return "";
-    }
-        
-}
-
-function IdConReporte($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['IdCon'];
-    } else {
-        return "FALSE";
-    }
-        
-}
-
-function QueryVar($id_rep, $IdVar){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-
-        switch ($IdVar) {
-            case 1:
-                return $f['var1_sql'];                
-                break;
-
-            case 2:
-                return $f['var2_sql'];                
-                break;
-
-                    
-            case 3:
-                return $f['var3_sql'];                
-                break;
-        
-        }
-        
-        
-    } else {
-        return "FALSE";
-    }
-        
-}
-
-
-
-function IdConVar($id_rep, $IdVar){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-
-        switch ($IdVar) {
-            case 1:
-                return $f['var1_IdCon'];                
-                break;
-
-            case 2:
-                return $f['var2_IdCon'];                
-                break;
-
-                    
-            case 3:
-                return $f['var3_IdCon'];                
-                break;
-        
-        }
-        
-        
-    } else {
-        return "FALSE";
-    }
-        
-}
-
-function TituloReporte($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['rep_name'];
-    } else {
-        return "FALSE";
-    }
-        
-}
-
-
-function ReporteFixedColLeft($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['FixedColLeft'];
-    } else {
-        return 0;
-    }
-        
-}
-
-
-function ReporteFixedColRight($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['FixedColRight'];
-    } else {
-        return 0;
-    }
-        
-}
-
-function ReporteFooter($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    $Footer = "";
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        $Footer = "<p clasS='ReporteFooter'>
-        Reporte realizado el ".$f['fecha']." a las ".$f['hora']." por ".UserName($f['IdUser']).", el usuario <b>Administrador de este reporte es ".UserName($f['admin']).".<br>
-        * Información extraida desde ".IdConInfo($f['IdCon'])."</p>
-        ";
-
-        return $Footer;
-    } else {
-        return "";
-    }
-        
-}
-
-function ReporteFooter2($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    $Footer = "";
-    // echo $sql;
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        // $Footer = "Reporte creado el ".$f['fecha']." a las ".$f['hora']." por ".UserName($f['IdUser']).", el usuario Administrador es ".UserName($f['admin']).".
-    //    DATA desde ".IdConInfo($f['IdCon'])." | ".InfoEquipo();
-
-       $Footer =  InfPC()." | ".ConName($f['IdCon'])." | ";
-
-        return $Footer;
-    } else {
-        return "";
-    }
-        
-}
-
-function DescripcionReporte($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    $LaDescripcion="";
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        $LaDescripcion = $f['rep_description'].". ";
-        if (isset($_GET['var1'])){
-            if (isset($_GET['var1'])){
-                $LaDescripcion.= "".$f['var1_label']."=".$_GET['var1'].". ";
-                
-            }
-    
-            if (isset($_GET['var2'])){
-                $LaDescripcion.= "".$f['var2_label']."=".$_GET['var2']."." ;
-                
-            }
-    
-    
-            if (isset($_GET['var3'])){
-                $LaDescripcion.= "".$f['var3_label']."=".$_POST['var3'].". ";
-                
-            }
-
-        } else {
-            if (isset($_POST['var1_str'])){
-                $LaDescripcion.= "".$f['var1_label']."=".$_POST['var1_str'].". ";
-                
-            }
-    
-            if (isset($_POST['var2_str'])){
-                $LaDescripcion.= "".$f['var2_label']."=".$_POST['var2_str']."." ;
-                
-            }
-    
-    
-            if (isset($_POST['var3_str'])){
-                $LaDescripcion.= "".$f['var3_label']."=".$_POST['var3_str'].". ";
-                
-            }
-    
-        }
-        
-        return " ".$LaDescripcion."";
-    } else {
-        return "FALSE";
-    }
-        
-}
-
-
-
-function ReporteTipo($id_rep){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
-    
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['out_type'];
-    } else {
-        return "FALSE";
-    }
-        
-}
-
 
 function getData()
 {    
@@ -695,49 +405,7 @@ function LocationFull($page){
 	echo ' <script type="text/javascript">top.location.href="'.$page.'"</script>';
 }
 
-function PermisoReporte_Ver($IdUser,$IdRep){
-    require("rintera-config.php");   
-    $sql = "select count(*) as n
-    
-    from reportes_permisos WHERE IdUser ='".$IdUser."' and id_rep='".$IdRep."'";
-    $rc= $db0 -> query($sql);
-    
-    
-    if($f = $rc -> fetch_array())
-    {
-        if ($f['n']==1)  {
-            return TRUE; // es admin
-        } else {
-            return FALSE; // no es admin
-        }
-    } else {
-        return FALSE;
-    }
 
-}
-
-
-
-function PermisoReporte_Share($IdUser,$IdRep){
-    require("rintera-config.php");   
-    $sql = "select count(*) as n
-    
-    from reportes_permisos WHERE IdUser ='".$IdUser."' and id_rep='".$IdRep."' and CompartirVer=1";
-    $rc= $db0 -> query($sql);
-    
-    
-    if($f = $rc -> fetch_array())
-    {
-        if ($f['n']==1)  {
-            return TRUE; // es admin
-        } else {
-            return FALSE; // no es admin
-        }
-    } else {
-        return FALSE;
-    }
-
-}
 
 
 
@@ -746,7 +414,7 @@ function DynamicTable_MySQL($QueryD, $IdDiv, $IdTabla, $Clase, $Tipo, $db){
 	//$sql = "select * from Colorines limit 20";
 	//DynamicTable_MySQL($sql, "Colorines", "Colorines_Tabla", "Colorines_ClaseCSS", 0, 0);
 
-    require("rintera-config.php");	
+    require("config.php");	
         $sql = $QueryD;
         // echo $sql;
         $r= $db0 -> query($sql);
@@ -885,237 +553,9 @@ function AcordionCard_Data($IdCard, $Text, $IdCollapsed, $Color){
 }
 
 
-function TestConectionDB($IdCon){
-require_once("rintera-config.php");   
-$sql = "select * from dbs where IdCon='".$IdCon."'";
-$rc= $db0 -> query($sql);
-if($f = $rc -> fetch_array())
-{
-    if ($f['dbhost']<>'' &&  $f['dbname']<>'' && $f['dbuser']<>'' && $f['dbpassword']<>'')    {
-        $Tdb_host = $f['dbhost'];
-        $Tdb_user = $f['dbuser'];
-        $Tdb_pass = $f['dbpassword'];
-        $Tdb_name = $f['dbname'];
-
-        
-            $Tdb = new mysqli($Tdb_host,$Tdb_user,$Tdb_pass,$Tdb_name);
-            if ($Tdb->connect_error) {
-                // die("Connection failed: " . $Tdb->connect_error);
-                Toast("Error al conectarse, revise los datos. ".$Tdb->connect_error,2,"");
-            }
-            $sql = "select @@version as Version";
-            $rT= $Tdb -> query($sql);
-            if($T = $rT -> fetch_array()){
-                Toast("Conección Existosa a ".$f['dbname']."@".$f['dbhost'].": <b>".$T['Version'],4,"")."</b>";
-            } else {
-                Toast("Error al conectase, revise los datos en su conección",3,"");
-            }
-        
-        
-         
-           
-
-
-
-
-
-    } else {
-        Toast("Sin datos para la coneccion",2,"");
-    }
-
-
-} else {
-    return "FALSE";
-}
-
-}
-
-function ConType($IdCon){
-    require("rintera-config.php");   
-    
-    $sql = "select * from dbs WHERE Idcon='".$IdCon."'";
-    $rc= $db0 -> query($sql);
-    if($f = $rc -> fetch_array())
-    {
-        return $f['ConType'];
-    } else{
-        return "";
-    }
-        
-}
-
-
-function IdConInfo($IdCon){
-    require("rintera-config.php");   
-    
-    $sql = "select * from dbs WHERE Idcon='".$IdCon."'";
-    $rc= $db0 -> query($sql);
-    if($f = $rc -> fetch_array())
-    {
-        return " ".$f['ConName'] ;
-    } else{
-        return "";
-    }
-        
-}
-
-
-function TestConectionWS($IdCon){
-    require("rintera-config.php");   
-    $sql = "select * from dbs where IdCon='".$IdCon."'";
-    $rc= $db0 -> query($sql);
-    if($f = $rc -> fetch_array())
-    {
-        if ($f['ConType']==2) //SQLSERVERTOJON 
-        {
-
-            $wsmethod ='POST';
-            $wsjson = '1';
-            $wsurl = $f['wsurl'];
-            
-            $wsP1_id = 'token';
-            $wsP1_value = $f['wsP1_value'];
-    
-            $wsP2_id = 'method';
-            $wsP2_value = $f['wsP2_value'];
-    
-            //Estos no se utilizan para este Webservice
-            // $wsP3_id = $f['wsP3_id'];
-            // $wsP3_value = $f['wsP3_value'];
-    
-            // $wsP4_id = $f['wsP4_id'];
-            // $wsP4_value = $f['wsP4_value'];
-
-
-            $url = $wsurl;            
-            $sql = "select 'OK' as Exito";
-            $token = $wsP1_value;
-
-            //Peticion
-            $myObj = new stdClass;
-            $myObj->token = $token;
-            $myObj->sql = $sql;
-            $myJSON = json_encode($myObj,JSON_UNESCAPED_SLASHES);
-            
-            $datos_post = http_build_query(
-                $myObj
-            );
-
-            $opciones = array('http' =>
-                array(
-                    'method'  => 'POST',
-                    'header'  => 'Content-type: application/x-www-form-urlencoded',
-                    'content' => $datos_post
-                )
-            );
-            
-            $context = stream_context_create($opciones);            
-            $archivo_web = @file_get_contents($url, false, $context);    
-            if ($archivo_web){
-                $data = json_decode($archivo_web);            
-                
-           
-        
-
-            // var_dump($data);
-            // echo "<hr>";
-
-            //Recorrido
-            $jsonIterator = new RecursiveIteratorIterator(
-                new RecursiveArrayIterator(json_decode($archivo_web, TRUE)),
-                RecursiveIteratorIterator::SELF_FIRST
-            );
-         
-            $Exito = FALSE;
-            foreach ($jsonIterator as $key => $val) {
-                    if(is_array($val)) {
-                        // echo $key.":<br>";
-                        // $Exito = TRUE;
-                    } else {
-                        // echo $key.":".$val."<br>";
-                        if ($key=='Exito' and $val == 'OK'){
-                            $Exito = TRUE;
-                        }
-                    }
-            }
-              
-            if ($Exito == TRUE){
-                Toast("Conexión exitosa a la Planta, Cd. Victoria",4,"");
-                return TRUE;
-            } else {
-                Toast("Fallo al conectar a la Planta, Cd. Victori",2,"");
-                return FALSE;
-            }
-
-        } else {
-            // Deal with it.
-            return FALSE;
-        }   
-            
-        } else {
-
-        }
-            
-            
-             
-               
-    
-    
-    
-    
-    } else {
-        return "FALSE";
-    }
-    
-    }
-
-
-    function PingtoDb($IdCon){
-        require("rintera-config.php");   
-        $sql = "select * from dbs where IdCon='".$IdCon."'";    
-        
-        $rc= $db0 -> query($sql);    
-        if($f = $rc -> fetch_array())
-        {    
-            if ($f['dbhost']<>'' &&  $f['dbname']<>'' && $f['dbuser']<>'' && $f['dbpassword']<>'')    {
-                $Tdb_host = $f['dbhost'];
-                $Tdb_user = $f['dbuser'];
-                $Tdb_pass = $f['dbpassword'];
-                $Tdb_name = $f['dbname'];
-                    $Tdb = new mysqli($Tdb_host,$Tdb_user,$Tdb_pass,$Tdb_name);
-                    if ($Tdb->connect_error) {
-                        // die("Connection failed: " . $Tdb->connect_error);
-                            Toast("Error al conectarse, revise los datos. ".$Tdb->connect_error,2,"");
-                            return FALSE;
-                    }
-                    $sql = "select @@version as Version";
-                    $rT= $Tdb -> query($sql);
-                    if($T = $rT -> fetch_array()){
-                        
-                        return TRUE;
-                    } else {
-                        
-                        return FALSE;
-                    }
-                
-            } else {
-               
-                return FALSE;
-            }
-        
-        
-        } else {
-            return FALSE;
-        }
-        
-    }
-        
-
-
-
 
 function TableToPDF($TablaHTML, $IdUser, $titulo, $descripcion, $PageSize, $orientacion, $id_rep, $info_leyenda ){	
-    require("rintera-config.php");
+    require("config.php");
     require('lib/pdf/tcpdf.php');
     $info_leyenda =  $info_leyenda. " IdUser: ".$IdUser." | ".$fecha.":".$hora;        
     $LogoFile = "Logo.png";
@@ -1358,7 +798,7 @@ function DataFromSQLSERVERTOJSON($id_rep, $Tipo, $ClaseTabla, $ClaseDiv, $IdUser
 {
 
 //SQLSERVERTOJSON = https://github.com/prymecode/sqlservertojson
-require("rintera-config.php");	
+require("config.php");	
 $Query = QueryReporte($id_rep);
     // echo "Query = ".$Query."<br>";
     if (isset($_GET['var1'])){
@@ -2309,7 +1749,7 @@ if($WSConF = $WSCon -> fetch_array())
 
 
 function DataFromMySQL($ClaseDiv, $ClaseTabla, $Tipo, $IdUser,$id_rep){
-    require("rintera-config.php");	
+    require("config.php");	
     $Query = QueryReporte($id_rep); 
     $FixedColLeft = ReporteFixedColLeft($id_rep);
     $FixedColRight = ReporteFixedColRight($id_rep);
@@ -2664,7 +2104,7 @@ include("con_close.php");
 
 
 function Reporte($id_rep, $Tipo, $ClaseDiv, $ClaseTabla, $IdUser ){
-    require("rintera-config.php");	
+    require("config.php");	
     $ClaseTabla = "tabla table-striped table-hover";
     $IdCon = IdConReporte($id_rep);
     $ConType = ConType($IdCon);
@@ -2700,7 +2140,7 @@ function Reporte($id_rep, $Tipo, $ClaseDiv, $ClaseTabla, $IdUser ){
 }
 
 function Error($Mensaje){
-    require("rintera-config.php");	
+    require("config.php");	
     echo "<div id='Error'
 
     style='
@@ -2734,7 +2174,7 @@ function EnviarCorreo($mail_dest, $asunto, $contenido){
         $replymail = 'itavu.informatica@tam.gob.mx';
         $replymail_name='Dpto. de Informatica de ITAVU';
 
-        require("rintera-config.php");    
+        require("config.php");    
         require_once('lib/mailer/PHPMailerAutoload.php');
         
         $footer="
@@ -2862,7 +2302,7 @@ function InfPC()
 
 
 function UserName($IdUser){
-    require("rintera-config.php");	
+    require("config.php");	
     $UsuariosForaneaos = Preference("UsuariosForaneaos", "", "");   
 
     
@@ -2889,7 +2329,7 @@ function ReporteEncabezado($id_rep){
 }
 
 function GuardaBusqueda($IdUser, $Search){      
-    require("rintera-config.php");    
+    require("config.php");    
     if ($Search == ''|| $Search == ' ' || $Search == '  '){ return FALSE;} else {
         $sql = "INSERT INTO search 
         (IdUser, Search) 
@@ -2905,7 +2345,7 @@ function GuardaBusqueda($IdUser, $Search){
 }
 
 function UltimaBusqueda($IdUser){
-    require("rintera-config.php");	    
+    require("config.php");	    
     $sql = "select * from search where IdUser = '".$IdUser."' order by IdSearch DESC limit 1";
     // echo $sql;
     $rc = $db0->query($sql);    
@@ -2926,7 +2366,7 @@ function UltimaBusqueda($IdUser){
 
 
 function UltimasBusquedas($IdUser){
-    require("rintera-config.php");	    
+    require("config.php");	    
     $sql = "select * from search where IdUser = '".$IdUser."' order by IdSearch DESC limit 10";
     // echo $sql;
     $rx = $db0->query($sql);    
@@ -2962,7 +2402,7 @@ function UltimasBusquedas($IdUser){
 }
 
 function UltimasBusquedas_buble($IdUser){
-    require("rintera-config.php");	    
+    require("config.php");	    
     $sql = "select DISTINCT Search from search where IdUser = '".$IdUser."' order by IdSearch DESC limit 10";
     // echo $sql;
     $rx = $db0->query($sql);    
@@ -2992,7 +2432,7 @@ function var_select($id_rep, $IdVar)
 {
 
 //SQLSERVERTOJSON = https://github.com/prymecode/sqlservertojson
-require("rintera-config.php");	
+require("config.php");	
 $Query =  QueryVar($id_rep, $IdVar);
 $IdCon = IdConVar($id_rep, $IdVar);
 $ConType = ConType($IdCon);
@@ -3198,7 +2638,7 @@ function GraficaPorcentaje($Div, $Valor){
 
 }
 function UserNIP($IdUser){
-    require("rintera-config.php");   
+    require("config.php");   
     // var_dump($dbUser);
     $sql = "select * from users WHERE IdUser='".$IdUser."'";        
     $r= $db0 -> query($sql);
@@ -3214,7 +2654,7 @@ function UserNIP($IdUser){
 
 
 function infoPermiso($id_rep,$IdUser){
-    require("rintera-config.php");   
+    require("config.php");   
     // var_dump($dbUser);
     $sql = "select * from reportes_permisos WHERE id_rep ='".$id_rep."' and '".$IdUser."'";        
     $r= $db0 -> query($sql);
@@ -3228,7 +2668,7 @@ function infoPermiso($id_rep,$IdUser){
 }
 
 function DarPermiso($id_rep, $IdUser, $IdUserAdmin){
-    require("rintera-config.php");	
+    require("config.php");	
     $sql = "INSERT INTO reportes_permisos (id_rep, IdUser,  fecha, hora, QuienAutorizo) 
     VALUES ('".$id_rep."', '".$IdUser."', '".$fecha."', '".$hora."', '".$IdUserAdmin."')";    
     echo $sql;
@@ -3246,7 +2686,7 @@ function DarPermiso($id_rep, $IdUser, $IdUserAdmin){
 
 
 function QuitarPermiso($id_rep, $IdUser, $IdUserAdmin){
-    require("rintera-config.php");	
+    require("config.php");	
     $sql = "DELETE  FROM  reportes_permisos WHERE id_rep='".$id_rep."' and IdUser='".$IdUser."'";    
     echo $sql;
     if ($db0->query($sql) == TRUE)
@@ -3681,7 +3121,7 @@ function GraficaBar($Labels, $Datas, $Titulo){
 }
 
 function GraficaInserColores(){
-require("rintera-config.php");
+require("config.php");
 $sql = "select 
 CONCAT(rgb,',0.9') as BorderColor,
 CONCAT(rgb,',0.5') as BackgroundColor
@@ -3722,7 +3162,7 @@ return $BorderColor.$BackgroundColor;
 
 
 function ReporteTipo($id_rep){
-    require("rintera-config.php");   
+    require("config.php");   
     // var_dump($dbUser);
     $sql = "select * from reportes WHERE id_rep ='".$id_rep."'";        
     
@@ -3738,22 +3178,9 @@ function ReporteTipo($id_rep){
 }
 
 
-function Procimart_ClaveProducto($Producto){
-    require("rintera-config.php");   
-    // var_dump($dbUser);
-    $sql = "select * from cat_idproducto WHERE Tipo ='".$Producto."'";            
-    $r= $db0 -> query($sql);
-    if($f = $r -> fetch_array())
-    {
-        return $f['IdProducto'];
-    } else {
-        return "";
-    }
-        
-}
 
 function ClaveDelProducto_id_rep($IdProducto){
-    require("rintera-config.php");   
+    require("config.php");   
     // var_dump($dbUser);
     $sql = "select * from cat_idproducto WHERE IdProducto ='".$IdProducto."'";            
     $r= $db0 -> query($sql);

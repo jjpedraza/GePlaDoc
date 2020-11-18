@@ -3,7 +3,7 @@
 
 //====================FUNCIONES TOKEN
 function MiToken_valida($Token, $usuario, $descripcion){
-    require("rintera-config.php");
+    require("config.php");
     // $Token = MiToken_generate();
     $sql = "SELECT * from  tokens WHERE user='$usuario' and token='$Token' and descripcion='".$descripcion."'";    
     // echo $sql;
@@ -23,7 +23,7 @@ function MiToken_valida($Token, $usuario, $descripcion){
     
 }
 function MiToken($usuario, $descripcion){
-    require("rintera-config.php");
+    require("config.php");
     $sql = "SELECT * from tokens WHERE user='$usuario' and activo='0' and descripcion = '".$descripcion."'";
     // echo $sql."<br>";
     $rc= $db0 -> query($sql);
@@ -35,7 +35,7 @@ function MiToken($usuario, $descripcion){
     }
 }
 function MiToken_Init($usuario, $descripcion){
-    require("rintera-config.php");
+    require("config.php");
     $sql = "SELECT count(*) as n from tokens WHERE user='$usuario' and activo='0' and descripcion='".$descripcion."'";
     // echo $sql;
     // echo $sql."<br>";
@@ -79,7 +79,7 @@ function MiToken_generate(){
 
 
 function MiToken_Close($usuario, $Token){
-    require("rintera-config.php");
+    require("config.php");
     
     $sql = "UPDATE tokens
         SET activo='1',
@@ -105,7 +105,7 @@ function MiToken_Close($usuario, $Token){
 
 
 function MiToken_CloseALL($usuario){
-    require("rintera-config.php");
+    require("config.php");
     
     $sql = "UPDATE tokens
         SET activo='1',

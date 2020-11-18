@@ -31,6 +31,10 @@
     src: url("OpenSans-ExtraBold.ttf") format("truetype")
 }
 
+#DivPlantillas {
+    padding: 10px;
+}
+
 label {
     display: block;
     margin: 0px;
