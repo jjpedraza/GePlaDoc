@@ -1,7 +1,7 @@
 <?php
 //Parametros
 // $URLWebService = "http://localhost/GePlaDoc/ws/get.php";
-$URLWebService = "https://plataformaitavu.tamaulipas.gob.mx/gepladoc/ws/get.php";
+$URLWebService = "https://tudominio.com/gepladoc/ws/get.php";
 $MiToken = "Prueba";
 $IdPlantilla = 1;
 $NEmpleado= "2809";
@@ -261,9 +261,8 @@ if ($Exito == TRUE){
 
 } else {
     echo '
-    <div class="alert alert-danger" role="alert">
     Error al obtener resultados: '.$Respuesta.'
-    </div>';
+    ';
 }
 
 ?>
