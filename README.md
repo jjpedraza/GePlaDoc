@@ -19,11 +19,9 @@ Puede utilizar multiple solicitudes, genera un archivo temporal en ws/output/ de
 - Levantar la base de datos bd/gepladoc.sql en tu servidor MySQL o MariaDB
 - Configurar las variables de conexión en config.sql y preference_config.php
 - Cambiar los valores en config.php:
-//PARAMETROS
-$WebsiteURL = "https://tudominio.com/gepladoc";
-$URLWebservice = "https://tudominio.com/gepladoc/ws/get.php";
-
-$TokenKey = "Prueba"; //<-- llave para el webservice
+- $WebsiteURL = "https://tudominio.com/gepladoc";
+- $URLWebservice = "https://tudominio.com/gepladoc/ws/get.php";
+- $TokenKey = "Prueba"; //<-- llave para el webservice
 
 
 
