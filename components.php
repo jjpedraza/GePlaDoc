@@ -413,7 +413,7 @@ function DynamicTable_MySQL($QueryD, $IdDiv, $IdTabla, $Clase, $Tipo, $db){
 	//Tipo == 0 = Basica, 1 = ScrollVertical, 2 = Scroll Horizontal
 	//$sql = "select * from Colorines limit 20";
 	//DynamicTable_MySQL($sql, "Colorines", "Colorines_Tabla", "Colorines_ClaseCSS", 0, 0);
-
+    // echo $QueryD;
     require("config.php");	
         $sql = $QueryD;
         // echo $sql;

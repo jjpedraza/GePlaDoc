@@ -47,30 +47,35 @@ if (isset($_GET['id'])){
                         }
                         else
                         { //Exito
-                          $sql = "UPDATE plantillas
-
-                            SET PlantillaDescripcion = '".$PlantillaDescripcion."',active='".$PlantillaEstado."'
-                            WHERE IdPlantilla = '".$IdPlantilla."'
-                            ";
-                            
-                            if ($db0->query($sql) == TRUE)
-                            {
-                                echo '<div class="alert alert-success" role="alert">
-                               Plantilla Actualizada con Exito
-                              </div>';
-                            }
-                            else {
-                                Toast("ERROR al guardar",4,"");
-                            }
+                         
 
                         
                         }
 
                     } else {$MensajeError.= ", archivo no compatible (solamente se aceptar .docx)";} 
 
-                } else {
-                    Toast("Selecciona un archivo de Word.docx",2,"");
+                } 
+
+                $sql = "UPDATE plantillas
+
+                SET PlantillaDescripcion = '".$PlantillaDescripcion."',active='".$PlantillaEstado."'
+                WHERE IdPlantilla = '".$IdPlantilla."'
+                ";
+                
+                if ($db0->query($sql) == TRUE)
+                {
+                    echo '<div class="alert alert-success" role="alert">
+                   Plantilla Actualizada con Exito
+                  </div>';
                 }
+                else {
+                    Toast("ERROR al guardar",4,"");
+                }
+
+                
+                // else {
+                //     Toast("Selecciona un archivo de Word.docx",2,"");
+                // }
                 if ($MensajeError <> ''){
                     Toast("ERROR ".$MensajeError,2,"");
                 }
@@ -119,17 +124,24 @@ if (isset($_GET['id'])){
 
         echo '
           </div>
-          <div class="col-md">
+          <div class="col-md" style="height:700px;">
            Vista Previa (<a href="">Actualizar</a>) :';
-           echo "
+           echo '
            <button class="btn btn-primary my-2 my-sm-0" type="submit" style="margin-left:10px;">
-        <a href="api.php" style="
-        display:block; color:white; width:100%; height:100%;
-        ">API</a>
-         </button>
-           ";
+            <a href="api.php" style="
+                display:block; color:white; width:100%; height:100%;
+                ">API</a>
+                </button>
+           ';
 
            echo "<a class='btn btn-primary' href='plantillas/".$IdPlantilla.".docx' download='Plantilla".$f['PlantillaNombre'].".docx'>Descargar</a>";
+            $ArchivoPlantilla = $WebsiteURL."/plantillas/".$IdPlantilla.".docx";
+            echo "
+           <iframe src='https://view.officeapps.live.com/op/embed.aspx?src=".$ArchivoPlantilla."' 
+            width='100%' height='100%' frameborder='0'>This is an embedded <a target='_blank' href='http://office.com'>Microsoft Office</a> document, powered by <a target='_blank' href='http://office.com/webapps'>Office Online</a>.
+            </iframe>
+            ";
+
            echo '</div>
           
         </div>

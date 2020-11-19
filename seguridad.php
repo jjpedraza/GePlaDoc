@@ -26,13 +26,6 @@ else
 	$_SESSION = array(); session_destroy();		   
 	unset($IdUser);
 
-	if (isset($_GET['IdUser'])){
-        $IdUser = VarClean($_GET['IdUser']);
-    } else {$IdUser = "";}
-    if (isset($_GET['id'])){
-        $id_rep = VarClean($_GET['id']);
-	} else {$id_rep = "";}
-	
 	$url = "";
 	if ($IdUser <> '') {
 		$url.="IdUser=".$IdUser;

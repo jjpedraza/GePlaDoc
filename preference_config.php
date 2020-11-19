@@ -39,6 +39,14 @@ $Pdbpass = "";
 $Pdbname = "gepladoc";
 
 
+//Produccion
+$Pdbhost = '192.168.159.5';	
+$Pdbuser = 'wbproduction1';
+$Pdbpass = '4Dm1NPr0'; 
+$Pdbname = 'gepladoc';
+
+
+
 if (function_exists('mysqli_connect')) {		
     $dbP = new mysqli($Pdbhost,$Pdbuser,$Pdbpass,$Pdbname);    
     $acentos = $dbP->query("SET NAMES 'utf8'"); // para los acentos

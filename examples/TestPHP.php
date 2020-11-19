@@ -1,8 +1,9 @@
 <?php
 //Parametros
-$URLWebService = "http://localhost/GePlaDoc/ws/get.php";
+// $URLWebService = "http://localhost/GePlaDoc/ws/get.php";
+$URLWebService = "https://plataformaitavu.tamaulipas.gob.mx/gepladoc/ws/get.php";
 $MiToken = "Prueba";
-$IdPlantilla = 9;
+$IdPlantilla = 1;
 $NEmpleado= "2809";
 
 //Peticion
@@ -196,39 +197,73 @@ $myObj->VC180 = "";
 //Armar peticion
 $myJSON = json_encode($myObj,JSON_UNESCAPED_SLASHES);
         
-        $datos_post = http_build_query(
-            $myObj
-        );
+$datos_post = http_build_query(
+    $myObj
+);
 
-        $opciones = array('http' =>
-            array(
-                'method'  => 'POST',
-                'header'  => 'Content-type: application/x-www-form-urlencoded',
-                'content' => $datos_post
-            )
-        );
-        
-        $context = stream_context_create($opciones);            
-        $archivo_web = file_get_contents($URLWebService, false, $context);            
-        $data = json_decode($archivo_web);
+$opciones = array('http' =>
+    array(
+        'method'  => 'POST',
+        'header'  => 'Content-type: application/x-www-form-urlencoded',
+        'content' => $datos_post
+    )
+);
+var_dump($opciones)  ; //<-- peticion
+$context = stream_context_create($opciones);          
 
-        var_dump($archivo_web);
-        
-//                 $jsonIterator = new RecursiveIteratorIterator(
-//                     new RecursiveArrayIterator(json_decode($archivo_web, TRUE)),
-//                     RecursiveIteratorIterator::SELF_FIRST
-//                 );
-            
-//                 foreach ($jsonIterator as $key => $val) {
-//                     if (is_numeric($key)){ //rows
-//                     // echo $limit."=".$key."=".$val."<br>";
-//                      $limit = 0;
-//                     }
-//                     else {
-//                         // echo "*".$limit."=".$key."=".$val."<br>";
-//                         $limit = $limit  + 1;
-//                     }
-                    
-//                 }
+$archivo_web = file_get_contents($URLWebService, false, $context);            
+$data = json_decode($archivo_web);
+
+var_dump($archivo_web); //<-- respuesta
+
+
+
+$jsonIterator = new RecursiveIteratorIterator(
+    new RecursiveArrayIterator(json_decode($archivo_web, TRUE)),
+    RecursiveIteratorIterator::SELF_FIRST
+);
+
+$IframeSRC = "";
+$Respuesta = "";
+$Exito = "";
+$urlFile ="";
+
+foreach ($jsonIterator as $key => $val) {
+    if (is_numeric($key)){ //rows
+    
+    }
+    else {
+        if ($key =='exito'){
+            $Exito = $val;
+
+        }
+
+        if ($key =='embed'){
+            $IframeSRC = $val;
+        }
+
+        if ($key =='msg'){
+            $Respuesta = $val;
+        }
+
+        if ($key =='urlfile'){
+            $urlFile = $val;
+        }
+    }
+    
+}
+
+
+if ($Exito == TRUE){
+    echo "
+    <iframe src='".$IframeSRC."' frameborder='0' style='width:50%; height:50%;'>Cargando...
+    </iframe>";
+
+} else {
+    echo '
+    <div class="alert alert-danger" role="alert">
+    Error al obtener resultados: '.$Respuesta.'
+    </div>';
+}
 
 ?>

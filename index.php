@@ -6,7 +6,7 @@
 
 <?php
 
-$QueryD = "select * from PlantillasVista";
+$QueryD = "select * from plantillavista";
 
 echo DynamicTable_MySQL($QueryD, "DivPlantillas", "IdTabla", "", 0, 1);
 
