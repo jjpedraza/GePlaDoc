@@ -25,3 +25,10 @@ Puede utilizar multiple solicitudes, genera un archivo temporal en ws/output/ de
 
 
 
+#EJEMPLO EN PHP:
+
+* [Ejemplo php ](https://github.com/prymecode/GePlaDoc/blob/master/examples/TestPHP.php) - 
+
+#Espero te sirva mi contribucion.
+🍺 por [Juan Jose Pedraza](https://jjpedraza.com) 😊
+- printepolis@gmail.com
