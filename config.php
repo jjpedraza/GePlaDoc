@@ -1,5 +1,4 @@
 <?php
-// require_once("components.php");
 
 $fecha = date('Y-m-d');
 $hora =  date ("H:i:s");
@@ -13,6 +12,12 @@ $db0_pass = '';
 $db0_name = 'gepladoc';
 
 
+
+//PARAMETROS
+$WebsiteURL = "https://plataformaitavu.tamaulipas.gob.mx/gepladoc";
+$URLWebservice = "https://plataformaitavu.tamaulipas.gob.mx/gepladoc/ws/get.php";
+
+$TokenKey = "Prueba"; //<-- llave para el webservice
 
 
 if (function_exists('mysqli_connect')) {		
@@ -28,13 +33,7 @@ if (function_exists('mysqli_connect')) {
 
 
 
-
-
 $session_auto_start = 1;
-$WebsiteURL = "https://plataformaitavu.tamaulipas.gob.mx/gepladoc";
-$URLWebservice = "https://plataformaitavu.tamaulipas.gob.mx/gepladoc/ws/get.php";
-
-
 
 //     //session.auto_start = 0 o 1;  si esta en 1, da error 
 //     //Warning: session_name(): Cannot change session name when session is active, al utilizar session_name(); ya que agrega    session_start(); al automaticamente
@@ -42,5 +41,5 @@ $URLWebservice = "https://plataformaitavu.tamaulipas.gob.mx/gepladoc/ws/get.php"
 
 
 
-$TokenKey = "Prueba";
+
 ?>
