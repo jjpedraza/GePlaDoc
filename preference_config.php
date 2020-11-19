@@ -39,11 +39,6 @@ $Pdbpass = "";
 $Pdbname = "gepladoc";
 
 
-//Produccion
-$Pdbhost = '192.168.159.5';	
-$Pdbuser = 'wbproduction1';
-$Pdbpass = '4Dm1NPr0'; 
-$Pdbname = 'gepladoc';
 
 
 
