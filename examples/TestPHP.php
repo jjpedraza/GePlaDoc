@@ -1,9 +1,9 @@
 <?php
 //Parametros
-// $URLWebService = "http://localhost/GePlaDoc/ws/get.php";
-$URLWebService = "https://tudominio.com/gepladoc/ws/get.php";
+$URLWebService = "http://localhost:8080/GePlaDoc/ws/get.php";
+//$URLWebService = "https://tudominio.com/gepladoc/ws/get.php";
 $MiToken = "Prueba";
-$IdPlantilla = 1;
+$IdPlantilla = 23;
 $NEmpleado= "2809";
 
 //Peticion
@@ -13,13 +13,13 @@ $myObj->IdPlantilla = $IdPlantilla;
 $myObj->NEmpleado = $NEmpleado;
 
 //Variables
-$myObj->VC001 = "";
-$myObj->VC002 = "";
-$myObj->VC003 = "";
-$myObj->VC004 = "";
-$myObj->VC005 = "";
-$myObj->VC006 = "";
-$myObj->VC007 = "";
+$myObj->VC001 = "FLOR PEREZ";
+$myObj->VC002 = "FLOR PEREZ";
+$myObj->VC003 = "FLOR PEREZ";
+$myObj->VC004 = "FLOR PEREZ";
+$myObj->VC005 = "FLOR PEREZ";
+$myObj->VC006 = "FLOR PEREZ";
+$myObj->VC007 = '<table><tr><th>titulo</th></tr><tr><td>algo</td></tr></table>';
 $myObj->VC008 = "";
 $myObj->VC009 = "";
 $myObj->VC010 = "";
@@ -196,25 +196,34 @@ $myObj->VC180 = "";
 
 //Armar peticion
 $myJSON = json_encode($myObj,JSON_UNESCAPED_SLASHES);
-        
+//var_dump($myJSON); 
 $datos_post = http_build_query(
     $myObj
 );
-
+//var_dump($datos_post);
 $opciones = array('http' =>
     array(
         'method'  => 'POST',
-        'header'  => 'Content-type: application/x-www-form-urlencoded',
+        'header'  => 'Content-type:  application/x-www-form-urlencoded',
         'content' => $datos_post
     )
 );
-var_dump($opciones)  ; //<-- peticion
+
+//  'header'  => 'Content-type: application/x-www-form-urlencoded',
+//var_dump($opciones)."<br>-------Opciones"  ; //<-- peticion
+
+//===******EN UNO DE ESOTOS DOS PASOS SE PIERDE LA ESTRUCTURA HTML, HABRÍA QUE VER EN CUAL DE LOS DOS, SI DE MI LADO O EN EL WEB SERVICES 
+
 $context = stream_context_create($opciones);          
+//var_dump($context);
 
-$archivo_web = file_get_contents($URLWebService, false, $context);            
+//===*******POR QUE AQUI TRAE LA RESPUESTA DEL WEB SERVICE, PERO REALMENTE NO SÉ QUE MANDE EL STREAM_CONTEXT
+
+$archivo_web = file_get_contents($URLWebService, false, $context); 
+var_dump($archivo_web)."<br>-------Archivo web"; //<-- respuesta           
 $data = json_decode($archivo_web);
+//var_dump($data);
 
-var_dump($archivo_web); //<-- respuesta
 
 
 

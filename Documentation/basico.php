@@ -28,7 +28,7 @@ function WordReplace(string $input, string $output, array $replacements): bool
 
         
         $xml = $zip->getFromName('word/document.xml');
-
+        var_dump($xml);
         
         $xml = str_replace(array_keys($replacements), array_values($replacements), $xml);
 

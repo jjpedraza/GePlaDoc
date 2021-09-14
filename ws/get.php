@@ -89,7 +89,8 @@ if ($ApiKey == $TokenKey){
             if (isset($_POST["VC074"])){$VC074 = VarClean($_POST["VC074"]);} else { $VC074="";}
             if (isset($_POST["VC075"])){$VC075 = VarClean($_POST["VC075"]);} else { $VC075="";}
             if (isset($_POST["VC076"])){$VC076 = VarClean($_POST["VC076"]);} else { $VC076="";}
-            if (isset($_POST["VC077"])){$VC077 = VarClean($_POST["VC077"]);} else { $VC077="";}
+           // if (isset($_POST["VC077"])){$VC077 = VarClean($_POST["VC077"]);} else { $VC077="";}
+            if (isset($_POST["VC077"])){$VC077 = $_POST["VC077"];} else { $VC077="";}
             if (isset($_POST["VC078"])){$VC078 = VarClean($_POST["VC078"]);} else { $VC078="";}
             if (isset($_POST["VC079"])){$VC079 = VarClean($_POST["VC079"]);} else { $VC079="";}
             if (isset($_POST["VC080"])){$VC080 = VarClean($_POST["VC080"]);} else { $VC080="";}
@@ -433,6 +434,8 @@ function RespuestaJSON($exito, $urlfile, $msg, $embed, $NEmpleado){
 
 function WordReplace(string $input, string $output, array $replacements): bool
 {
+
+    print_r ($replacements);
     if (copy($input, $output)) {
 
         
@@ -445,10 +448,10 @@ function WordReplace(string $input, string $output, array $replacements): bool
 
         
         $xml = $zip->getFromName('word/document.xml');
-
+        
         
         $xml = str_replace(array_keys($replacements), array_values($replacements), $xml);
-
+        var_dump($xml)."<br>-------xml";
         
         if (false === $zip->addFromString('word/document.xml', $xml)) {
             return false;
