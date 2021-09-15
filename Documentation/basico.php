@@ -1,6 +1,6 @@
 <?php
 
-
+//Mas Info http://officeopenxml.com/index.php
 $input        = 'testfile.docx';
 $output       = 'testfile2.docx';
 $replacements = [
