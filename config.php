@@ -6,10 +6,12 @@ require_once("preference.php");
 
 
 //CONEXION DE LA BASE DE DATOS DE RINTERA	
-$db0_host = 'localhost';	
-$db0_user = 'root';
-$db0_pass = ''; 
+$db0_host = '192.168.159.5';	
+$db0_user = 'wbproduction1';
+$db0_pass = '4Dm1NPr0'; 
 $db0_name = 'gepladoc';
+
+
 
 
 
